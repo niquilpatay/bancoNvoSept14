@@ -84,11 +84,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSetCuentasSaldo.xsd</DependentUpon>
     </Compile>
-    <Compile Include="datos\accesoDatos.cs" />
-    <Compile Include="datos\accesoDatosConexion.cs" />
+    <Compile Include="datos\BancoDAO.cs" />
+    <Compile Include="datos\accesoDB.cs" />
+    <Compile Include="datos\implementacion\gestorDB.cs" />
     <Compile Include="entidades\Cliente.cs" />
     <Compile Include="entidades\Cuenta.cs" />
-    <Compile Include="entidades\Interface1.cs" />
+    <Compile Include="datos\interfaz\iBancoDAO.cs" />
     <Compile Include="formularios\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -122,6 +123,10 @@
     <Compile Include="datos\Parametro.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="servicios\factoryServicio.cs" />
+    <Compile Include="servicios\implementacionFactoryServicio.cs" />
+    <Compile Include="servicios\implementacion\bancoServicio.cs" />
+    <Compile Include="servicios\interfaz\iServicio.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
     <EmbeddedResource Include="formularios\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

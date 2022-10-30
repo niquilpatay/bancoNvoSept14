@@ -13,8 +13,6 @@ namespace banco
 {
     public partial class Menu : Form
     {
-      
-
         public Menu()
         {
             InitializeComponent();
@@ -22,7 +20,7 @@ namespace banco
 
         private void nuevoClienteCuentaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmNvoClienteCuenta form1 = frmNvoClienteCuenta.obtenerInstancia();
+            frmNvoClienteCuenta form1 = new frmNvoClienteCuenta();
             form1.ShowDialog();
         }
 

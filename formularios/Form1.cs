@@ -9,30 +9,32 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using banco.datos;
+using banco.servicios.interfaz;
+using banco.servicios;
 
 namespace banco
 {
     //INICIALIZACIÓN DE FORM
     public partial class frmNvoClienteCuenta : Form
     {
-        //accesoDatos oDB;
         List<Cliente> clientes;
         List<Cuenta> cuentas;
+        private iServicio servicio; 
 
-        private static frmNvoClienteCuenta instancia;
+        /*private static frmNvoClienteCuenta instancia;
 
         public static frmNvoClienteCuenta obtenerInstancia()
         {
             if (instancia == null)
                 instancia = new frmNvoClienteCuenta();
             return instancia;
-        }
+        }*/
         public frmNvoClienteCuenta()
         {
             InitializeComponent();
-            //oDB = new accesoDatos();
             clientes = new List<Cliente>();
             cuentas = new List<Cuenta>();
+            servicio = new implementacionFactoryServicio().crearServicio();
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -46,22 +48,22 @@ namespace banco
         //CARGAR GRILLAS Y COMBO CON SP
         private void cargarGrilla()
         {
-            DataTable tabla = accesoDatos.obtenerInstancia().consultarBD("cargar_Cliente");
+            DataTable tabla = servicio.consultarBD("cargar_Cliente");
             dataGridView1.DataSource = tabla;
         }
         private void cargarGrilla2()
         {
-            DataTable tabla = accesoDatos.obtenerInstancia().consultarBD("cargarCuentasActivas");
+            DataTable tabla = servicio.consultarBD("cargarCuentasActivas");
             dataGridView2.DataSource = tabla;
         }
         private void cargarGrilla3()
         {
-            DataTable tabla = accesoDatos.obtenerInstancia().consultarBD("cargarCuentasInactivas");
+            DataTable tabla = servicio.consultarBD("cargarCuentasInactivas");
             dataGridView2.DataSource = tabla;
         }
         private void cargarCombo(ComboBox combo)
         {
-            DataTable tabla = accesoDatos.obtenerInstancia().consultarBD("cargar_tipoCuenta");
+            DataTable tabla = servicio.consultarBD("cargar_tipoCuenta");
             combo.DataSource = tabla;
             combo.ValueMember = tabla.Columns[0].ColumnName;
             combo.DisplayMember = tabla.Columns[1].ColumnName;
@@ -321,7 +323,7 @@ namespace banco
                     parametros.Add(new Parametro("@nombre", c.Nombre));
                     parametros.Add(new Parametro("@apellido", c.Apellido));
 
-                    if ((accesoDatos.obtenerInstancia().actualizarBD(nomSP, parametros) == true))
+                    if ((servicio.actualizarBD(nomSP, parametros) == true))
                     {
                         MessageBox.Show("Se insertó cliente.");
                         limpiarCliente();
@@ -362,7 +364,7 @@ namespace banco
                     parametros.Add(new Parametro("@estado", cu.Estado));
 
 
-                    if ((accesoDatos.obtenerInstancia().actualizarBD(nomSP, parametros) == true))
+                    if ((servicio.actualizarBD(nomSP, parametros) == true))
                     {
                         MessageBox.Show("Se insertó cuenta.");
                         limpiarCuenta();
@@ -384,7 +386,7 @@ namespace banco
                 double saldo = Convert.ToDouble(txtSaldo.Text);
                 DateTime ultimoMovimiento = dtpUltMov.Value;
 
-                if ((accesoDatos.obtenerInstancia().actualizarBD_SP_cuenta("actualizar_Cuenta2", cbu,saldo,ultimoMovimiento) == true))
+                if ((servicio.actualizarBD_SP_cuenta("actualizar_Cuenta2", cbu,saldo,ultimoMovimiento) == true))
                 {
                         MessageBox.Show("Se actualizó cuenta.");
                         limpiarCuenta();
@@ -405,7 +407,7 @@ namespace banco
                 string nombre = Convert.ToString(txtNombre.Text);
                 string apellido = Convert.ToString(txtApellido.Text);
 
-                if ((accesoDatos.obtenerInstancia().actualizarBD_SP2("actualizar_Cliente", dni,nombre,apellido) == true))
+                if ((servicio.actualizarBD_SP2("actualizar_Cliente", dni,nombre,apellido) == true))
                 {
                     MessageBox.Show("Se actualizó cliente.");
                     limpiarCliente();
@@ -424,7 +426,7 @@ namespace banco
         {
             int cbu = Convert.ToInt32(txtCBU_2.Text);
 
-            if (accesoDatos.obtenerInstancia().actualizarBD_SP3("eliminar_Cuenta", cbu) == true)
+            if (servicio.actualizarBD_SP3("eliminar_Cuenta", cbu) == true)
             {
                 MessageBox.Show("Cuenta eliminada.");
                 cargarGrilla2();
@@ -444,7 +446,7 @@ namespace banco
         {
             int dni = Convert.ToInt32(txtDNI.Text);
 
-            if(accesoDatos.obtenerInstancia().actualizarBD_SP4("eliminar_Cliente", dni) == true)
+            if(servicio.actualizarBD_SP4("eliminar_Cliente", dni) == true)
             {
                 MessageBox.Show("Cliente eliminado.");
                 cargarGrilla();
@@ -473,7 +475,7 @@ namespace banco
             {
                 estado = 1;
             }
-            if (accesoDatos.obtenerInstancia().desactivarCuenta("desactivarCuenta",cbu,estado) == true)
+            if (servicio.desactivarCuenta("desactivarCuenta",cbu,estado) == true)
             {
                 MessageBox.Show("Cuenta desactivada.");
 

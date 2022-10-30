@@ -6,20 +6,21 @@ using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 using banco.datos;
-using banco.entidades;
 
 namespace banco
 {
-    internal class accesoDatos : accesoDatosConexion, Interface1
-    {
-        private static accesoDatos instancia;
+    internal class BancoDAO : accesoDB
 
-        public static accesoDatos obtenerInstancia()
+    {
+        private static BancoDAO instancia;
+
+        public static BancoDAO obtenerInstancia()
         {
             if (instancia == null)
-                instancia = new accesoDatos();
+                instancia = new BancoDAO();
             return instancia;
         }
+
         public DataTable consultarBD(string nomSP)
         {
             DataTable cuentas = new DataTable();

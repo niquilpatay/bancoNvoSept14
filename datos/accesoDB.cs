@@ -8,13 +8,13 @@ using System.Data.SqlClient;
 
 namespace banco.datos
 {
-    internal class accesoDatosConexion
+    internal class accesoDB
     {
         protected SqlConnection conexion;
         protected SqlCommand comando;
         protected SqlTransaction transaccion;
 
-        public accesoDatosConexion()
+        public accesoDB()
         {
             conexion = new SqlConnection(Properties.Resources.cadenaConexion);
             comando = new SqlCommand();
